@@ -1,0 +1,26 @@
+services:
+  juice-shop:
+    image: bkimminich/juice-shop:latest
+    container_name: juice-shop
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=unsafe
+    networks:
+      - appsec-net
+
+  tools:
+    build: .
+    container_name: appsec-tools
+    depends_on:
+      - juice-shop
+    tty: true
+    stdin_open: true
+    volumes:
+      - ./work:/work
+    networks:
+      - appsec-net
+
+networks:
+  appsec-net:
+    driver: bridge
